@@ -85,5 +85,7 @@ Gradebook::Course::~Course()
 
 bool operator<(const Gradebook::Course& a, const Gradebook::Course& b)
 {
+	if(a.m_year < b.m_year) return true;
+	if(a.m_year > b.m_year) return false;
 	return a.m_semester < b.m_semester;
 }
