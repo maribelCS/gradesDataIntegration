@@ -29,6 +29,7 @@ class Gradebook
 		void addCourse(const std::string, const int year, const Semester);
 		void printAll() const;
 		friend bool operator<(const Course&, const Course&);
+		void exportStudent(const std::string studentID, const std::string saveLocation) const;
 };
 
 #endif
