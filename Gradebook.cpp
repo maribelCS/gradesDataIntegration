@@ -14,10 +14,9 @@ Gradebook::~Gradebook()
 {
 }
 
-void Gradebook::addCourse(const string filename, const int year, const Semester semester)
+void Gradebook::addCourse(const string& filename, const string& courseName, const int& year, const Semester& semester)
 {
-	Course course(filename, year, semester);
-	m_courses.insert(course);
+	m_courses.insert(Course (filename, courseName, year, semester));
 }
 
 void Gradebook::printAll() const
@@ -124,10 +123,9 @@ void Gradebook::exportStudent(const string studentID, const string saveLocation)
 
 
 
-Gradebook::Course::Course(const string& filename, const int& year, const Semester& semester)
+Gradebook::Course::Course(const string& filename, const string& courseName, const int& year, const Semester& semester)
+	:m_courseName(courseName), m_year(year), m_semester(semester)
 {
-	m_year = year;
-	m_semester = semester;
 	ifstream file (filename.c_str());
 	if (!file.is_open())
 	{

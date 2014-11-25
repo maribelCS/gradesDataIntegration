@@ -14,9 +14,14 @@ class Gradebook
 		class Course
 		{
 		public:
-			Course(const std::string&, const int&, const Semester&);
+			Course(
+				const std::string& filename,
+				const std::string& courseName,
+				const int& year,
+				const Semester& semester);
 			~Course();
 			void printAll() const;
+			std::string m_courseName;
 			int m_year;
 			Semester m_semester;
 			std::vector<std::string> m_fields;
@@ -26,9 +31,13 @@ class Gradebook
 	public:
 		Gradebook();
 		~Gradebook();
-		void addCourse(const std::string, const int year, const Semester);
-		void printAll() const;
 		friend bool operator<(const Course&, const Course&);
+		void addCourse(
+			const std::string& filename,
+			const std::string& courseName,
+			const int& year,
+			const Semester& semester);
+		void printAll() const;
 		void exportStudent(const std::string studentID, const std::string saveLocation) const;
 };
 
