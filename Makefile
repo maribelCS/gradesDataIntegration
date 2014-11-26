@@ -1,4 +1,4 @@
-Gradebook: main.o Gradebook.o
+Gradebook: main.o Gradebook.o Menu.o
 	g++ -o Gradebook main.o Gradebook.o Menu.o
 
 main.o: main.cpp Gradebook.o

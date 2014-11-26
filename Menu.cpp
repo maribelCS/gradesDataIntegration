@@ -35,7 +35,7 @@ void Menu::printMenu() {
 	case 'E':
 	case 'e':
 	cout << "exit"<<endl;
-	System.exit(0);
+	//System.exit(0); commented out by Ross. Compiler was complaining
 	break;
 
 	}

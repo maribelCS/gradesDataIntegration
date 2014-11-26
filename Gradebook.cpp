@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
+#include <iterator>
 #include "Gradebook.h"
 
 using namespace std;
@@ -37,7 +38,7 @@ void Gradebook::exportStudent(const string studentID, const string saveLocation)
 
 	for(set<Course>::const_iterator course = m_courses.begin(); course != m_courses.end(); ++course)
 	{
-
+		string courseName = course->m_courseName;
 		int year = course->m_year;
 		string semester = SemesterString[course->m_semester];
 		int idField = 0;
@@ -58,7 +59,6 @@ void Gradebook::exportStudent(const string studentID, const string saveLocation)
 		{
 			vector<string> s = *student;
 
-
 			//checking every student ID 
 			if (s[idField].compare(studentID) == 0) //found a match
 			{
@@ -71,42 +71,60 @@ void Gradebook::exportStudent(const string studentID, const string saveLocation)
 				//we can iterate through both vectors together since the fields and data should always match at a given index
 				while ((sit != s.end()) && (f != course->m_fields.end()))
 				{
-					string fval = *f;
-					std:transform(fval.begin(), fval.end(), fval.begin(), ::tolower); //makes f lower case for more accurate checking
+					string fval = *f; //current header title
+					std:transform(fval.begin(), fval.end(), fval.begin(), ::tolower); //makes fval lower case for more accurate checking
 
 					//we only keep the fields that aren't related to the names and user ids
 					if (fval.find("name") == string::npos && fval.find("student id") == string::npos && fval.find("user id") == string::npos)
 					{
 						stringstream ss;
-						//IT380 should not be hardcoded. need to get this elsewhere
-						ss << "IT380" << "-" << semester << "-" << year << "-" << *f;
-						newFields.push_back(ss.str());
+						ss << courseName << "-" << semester << "-" << year << "-" << *f;
+						string sout = ss.str();
+						sout.erase(remove(sout.begin(), sout.end(), '\r'), sout.end()); //removes newlines
+						//cout << sout;
+						newFields.push_back(sout);
 						ss.str("");
-						newData.push_back(*sit);
+
+						string dout = *sit;
+						dout.erase(remove(dout.begin(), dout.end(), '\r'), dout.end()); //removes newlines
+						newData.push_back(dout);
+
 					}
 					f++;
 					sit++;
 				}
-
+		
 				while (sit != s.end()) {
-					newData.push_back(*sit);
+					string str = *sit;
+					str.erase(remove(str.begin(), str.end(), '\r'), str.end()); //removes newlines
+					newData.push_back(str);
 					sit++;
 				}
-					//cout << *sit << endl;
+
 			}
 		}
 		
 	}
 	
+
 	//writing out
-	int ctr = 0;
 
 	//appends .csv. and saves to /data/
 	ofstream outfile(("data/"+saveLocation+".csv").c_str());
-	
+	//copy(newFields.begin(), newFields.end(), ostream_iterator<string>(outfile,","));
+	//outfile << endl;
+	//copy(newData.begin(), newData.end(), ostream_iterator<string>(outfile,","));
+
+	//ostream_iterator<std::string> 
+
+
+
+	int ctr = 0;
+
 	for (vector<string>::const_iterator fw = newFields.begin(); fw != newFields.end(); ++fw) {
 		outfile << *fw;
 		if (ctr != newFields.size()-1) outfile << ",";
+		outfile.flush();
 		ctr++;
 	}
 		ctr = 0;
@@ -114,10 +132,10 @@ void Gradebook::exportStudent(const string studentID, const string saveLocation)
 	for (vector<string>::const_iterator dr = newData.begin(); dr != newData.end(); ++dr) {
 		outfile << *dr;
 		if (ctr != newData.size()-1) outfile << ",";
+		outfile.flush();
 		ctr++;
 	}
-		outfile.close();
-
+	outfile.close();
 }
 
 
