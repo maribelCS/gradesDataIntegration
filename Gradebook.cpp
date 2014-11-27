@@ -144,13 +144,8 @@ Gradebook::Course::Course(const string& filename, const string& courseName, cons
 		cout << "Unable to open file";
 		return;
 	}
-	string line;
-	if(!getline(file, line))
-	{
-		cout << "Cannot read file";
-		return;
-	}
 
+	string line;
 	while (getline(file, line))
 	{
 		m_students.push_back(vector<string>());
