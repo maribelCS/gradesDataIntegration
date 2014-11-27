@@ -28,9 +28,6 @@ void Gradebook::printAll() const
 	}
 }
 
-
-
-
 void Gradebook::exportStudent(const string studentID, const string saveLocation) const
 {
 	vector<string> newFields;
@@ -138,9 +135,6 @@ void Gradebook::exportStudent(const string studentID, const string saveLocation)
 	outfile.close();
 }
 
-
-
-
 Gradebook::Course::Course(const string& filename, const string& courseName, const int& year, const Semester& semester)
 	:m_courseName(courseName), m_year(year), m_semester(semester)
 {
@@ -156,22 +150,35 @@ Gradebook::Course::Course(const string& filename, const string& courseName, cons
 		cout << "Cannot read file";
 		return;
 	}
-	stringstream linestream(line);
-	string item;
-	while (getline(linestream, item, ',')) {
-		m_fields.push_back(item);
-	}
-
 
 	while (getline(file, line))
 	{
 		m_students.push_back(vector<string>());
 		stringstream linestream(line);
-		while (getline(linestream, item, ',')) {
-			m_students.back().push_back(item);
+		while (!linestream.eof()) {
+			string record;
+			while(linestream.peek()==' ') linestream.get(); // remove space after comma
+			if(linestream.peek() == '"')
+			{
+				linestream.get();
+				getline(linestream, record, '"');
+				while(linestream.peek() == '"') {
+					record += linestream.get();
+					string piece;
+					getline(linestream, piece, '"');
+					record += piece;
+				}
+				if(linestream.peek()==',') linestream.get();
+			}
+			else
+			{
+				getline(linestream, record, ',');
+			}
+			m_students.back().push_back(record);
 		}
 	}
 	file.close();
+	m_fields = *m_students.erase(m_students.begin());
 }
 
 void Gradebook::Course::printAll() const
