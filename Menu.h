@@ -7,7 +7,11 @@ class Menu
 		
 	public:
 		Menu();
-		void printMenu();
+		int printMenu();
+		void handleAddDataRequest();
+		void handleSaveDataRequest();
+		int exitProgram();
+		void promptUserChoice();
 };
 
 #endif
