@@ -141,7 +141,7 @@ Gradebook::Course::Course(const string& filename, const string& courseName, cons
 	ifstream file (filename.c_str());
 	if (!file.is_open())
 	{
-		cout << "Unable to open file";
+		cout << "Unable to open file" << endl;
 		return;
 	}
 
@@ -173,7 +173,8 @@ Gradebook::Course::Course(const string& filename, const string& courseName, cons
 		}
 	}
 	file.close();
-	m_fields = *m_students.erase(m_students.begin());
+	m_fields = *m_students.begin();
+	m_students.erase(m_students.begin());
 }
 
 void Gradebook::Course::printAll() const
