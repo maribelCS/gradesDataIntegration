@@ -28,10 +28,12 @@ void Gradebook::printAll() const
 	}
 }
 
-void Gradebook::exportStudent(const string studentID, const string saveLocation) const
+void Gradebook::exportStudent(const string studentID,  string saveLocation) const
 {
 	vector<string> newFields;
 	vector<string> newData;
+
+
 
 	for(set<Course>::const_iterator course = m_courses.begin(); course != m_courses.end(); ++course)
 	{
@@ -56,15 +58,17 @@ void Gradebook::exportStudent(const string studentID, const string saveLocation)
 		{
 			vector<string> s = *student;
 
-			//checking every student ID 
-			if (s[idField].compare(studentID) == 0) //found a match
+			//checking every student ID for a match
+			if (s[idField].compare(studentID) == 0)
 			{
+
 				if (newData.size() == 0) newData.push_back(s[idField]); //first entry of the created csv is always the id
 				if (newFields.size() == 0) newFields.push_back("User ID");
 
 				//get iterators for the fields and for the data
 				vector<string>::const_iterator sit = s.begin();
 				vector<string>::const_iterator f = course->m_fields.begin();
+
 				//we can iterate through both vectors together since the fields and data should always match at a given index
 				while ((sit != s.end()) && (f != course->m_fields.end()))
 				{
@@ -75,65 +79,60 @@ void Gradebook::exportStudent(const string studentID, const string saveLocation)
 					if (fval.find("name") == string::npos && fval.find("student id") == string::npos && fval.find("user id") == string::npos)
 					{
 						stringstream ss;
+						//building new header titles in the form courseName-semester-year-title
 						ss << courseName << "-" << semester << "-" << year << "-" << *f;
 						string sout = ss.str();
 						sout.erase(remove(sout.begin(), sout.end(), '\r'), sout.end()); //removes newlines
-						//cout << sout;
 						newFields.push_back(sout);
 						ss.str("");
 
 						string dout = *sit;
 						dout.erase(remove(dout.begin(), dout.end(), '\r'), dout.end()); //removes newlines
-						newData.push_back(dout);
+						
+						newData.push_back("\""+dout+"\"");
 
 					}
+
 					f++;
 					sit++;
-				}
-		
-				while (sit != s.end()) {
-					string str = *sit;
-					str.erase(remove(str.begin(), str.end(), '\r'), str.end()); //removes newlines
-					newData.push_back(str);
-					sit++;
-				}
 
+				}
 			}
 		}
-		
 	}
 	
+	if (newData.size() == 0) {
+		cout << "No match found for student " << studentID << endl;
+		return;
+	}
 
 	//writing out
 
 	//appends .csv. and saves to /data/
-	ofstream outfile(("data/"+saveLocation+".csv").c_str());
-	//copy(newFields.begin(), newFields.end(), ostream_iterator<string>(outfile,","));
-	//outfile << endl;
-	//copy(newData.begin(), newData.end(), ostream_iterator<string>(outfile,","));
 
-	//ostream_iterator<std::string> 
-
-
+	ofstream outfile(("data/"+saveLocation).c_str());
 
 	int ctr = 0;
 
+	//writing the fields
 	for (vector<string>::const_iterator fw = newFields.begin(); fw != newFields.end(); ++fw) {
 		outfile << *fw;
 		if (ctr != newFields.size()-1) outfile << ",";
-		outfile.flush();
 		ctr++;
 	}
 		ctr = 0;
 		outfile << endl;
+
+	//writing the data
 	for (vector<string>::const_iterator dr = newData.begin(); dr != newData.end(); ++dr) {
 		outfile << *dr;
 		if (ctr != newData.size()-1) outfile << ",";
-		outfile.flush();
 		ctr++;
 	}
 	outfile.close();
+	cout << "Added student " << studentID << " to " << saveLocation << endl;
 }
+
 
 Gradebook::Course::Course(const string& filename, const string& courseName, const int& year, const Semester& semester)
 	:m_courseName(courseName), m_year(year), m_semester(semester)
