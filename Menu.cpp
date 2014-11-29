@@ -61,14 +61,17 @@ void Menu::promptUserChoice() {
 int Menu::printMenu() {
 
 	
-	char userChoice;
+	char userChoice = '1';
+	cout << "userchoice" + userChoice;
 	promptUserChoice();	
 	userChoice = cin.get();
 
-	do {
+	while (userChoice != 'e' && userChoice != 'E') {
 
-		promptUserChoice();
-		userChoice = cin.get();	
+		if (userChoice != 1) {
+			promptUserChoice();
+			userChoice = cin.get();	
+		}
 
 		switch(userChoice) {	
 
@@ -85,8 +88,8 @@ int Menu::printMenu() {
 
 		case 'E':
 		case 'e':
-		cout << "exit"<<endl;
-		return 0;
+		//cout << "exit"<<endl;
+		//return 0;
 		break;
 
 		default: 
@@ -95,7 +98,7 @@ int Menu::printMenu() {
 		} // END of switch
 	}  // END do in do while
 
-	while (userChoice != 'e' && userChoice != 'E'); 
+	 
 	cout << "after"<<endl;
 
 }
