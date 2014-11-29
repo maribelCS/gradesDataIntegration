@@ -32,6 +32,7 @@ void Menu::handleAddDataRequest() {
 	cin >> courseDept;
 	
 	cout << "ENTER THE COURSE NUMBER: \n";
+	cin >> courseNumber;
 }
 
 void Menu::handleSaveDataRequest() {
@@ -61,17 +62,20 @@ void Menu::promptUserChoice() {
 int Menu::printMenu() {
 
 	
-	char userChoice = '1';
+	char userChoice;
+	int firstPrompt = 0;
 	cout << "userchoice" + userChoice;
 	promptUserChoice();	
 	userChoice = cin.get();
 
 	while (userChoice != 'e' && userChoice != 'E') {
 
-		if (userChoice != 1) {
+		if (firstPrompt != 0) {
 			promptUserChoice();
 			userChoice = cin.get();	
 		}
+
+		firstPrompt++; 
 
 		switch(userChoice) {	
 
