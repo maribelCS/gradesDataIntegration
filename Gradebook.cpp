@@ -29,6 +29,7 @@ void Gradebook::addCourse(
 	}
 	Course course = Course(file, courseName, year, semester);
 	m_courses.insert(course);
+
 	cout << "Successfully added "
 		<< course.m_year << " "
 		<< course.m_courseName << " "
@@ -178,6 +179,8 @@ Gradebook::Course::Course(ifstream& file, const string& courseName, const int& y
 		}
 	}
 	file.close();
+
+	// Move first element to m_fields
 	m_fields = *m_students.begin();
 	m_students.erase(m_students.begin());
 }

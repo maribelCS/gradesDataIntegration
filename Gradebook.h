@@ -31,7 +31,6 @@ class Gradebook
 			std::vector<Student> m_students;
 		};
 		std::set<Course> m_courses;
-		std::map<std::string, std::vector<Student*> > m_students;
 	public:
 		Gradebook();
 		~Gradebook();
