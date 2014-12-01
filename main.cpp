@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Gradebook.h"
-#include "Menu.h"
+#include "GradebookUI.h"
 
 int main()
 {
@@ -10,7 +10,7 @@ int main()
 	gb.addCourse("data/467-fall-2002.csv", "IT467", 2003, Fall);
 	//gb.printAll();
 	gb.exportStudent("1wvs78", "file2.csv");
-	Menu menu = Menu();
+	GradebookUI menu = GradebookUI();
 	menu.printMenu();
 	return 0;
 }
