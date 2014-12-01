@@ -15,7 +15,7 @@ class Gradebook
 		{
 		public:
 			Course(
-				const std::string& filename,
+				std::ifstream& filename,
 				const std::string& courseName,
 				const int& year,
 				const Semester& semester);

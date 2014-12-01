@@ -15,9 +15,24 @@ Gradebook::~Gradebook()
 {
 }
 
-void Gradebook::addCourse(const string& filename, const string& courseName, const int& year, const Semester& semester)
+void Gradebook::addCourse(
+	const string& filename,
+	const string& courseName,
+	const int& year,
+	const Semester& semester)
 {
-	m_courses.insert(Course (filename, courseName, year, semester));
+	ifstream file (filename.c_str());
+	if (!file.is_open())
+	{
+		cout << "Unable to open file" << endl;
+		return;
+	}
+	Course course = Course(file, courseName, year, semester);
+	m_courses.insert(course);
+	cout << "Successfully added "
+		<< course.m_year << " "
+		<< course.m_courseName << " "
+		<< SemesterString[course.m_semester] << endl;
 }
 
 void Gradebook::printAll() const
@@ -32,8 +47,6 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 {
 	vector<string> newFields;
 	vector<string> newData;
-
-
 
 	for(set<Course>::const_iterator course = m_courses.begin(); course != m_courses.end(); ++course)
 	{
@@ -134,16 +147,9 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 }
 
 
-Gradebook::Course::Course(const string& filename, const string& courseName, const int& year, const Semester& semester)
+Gradebook::Course::Course(ifstream& file, const string& courseName, const int& year, const Semester& semester)
 	:m_courseName(courseName), m_year(year), m_semester(semester)
 {
-	ifstream file (filename.c_str());
-	if (!file.is_open())
-	{
-		cout << "Unable to open file" << endl;
-		return;
-	}
-
 	string line;
 	while (getline(file, line))
 	{
