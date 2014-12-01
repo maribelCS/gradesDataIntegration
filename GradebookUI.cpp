@@ -30,7 +30,9 @@ void GradebookUI::handleAddDataRequest() {
 			cout << "[" << i << "] " << SemesterString[i] << endl;
 		}
 		cin >> choice;
-	} while(!(choice >= Spring && choice <= Fall));
+	} 
+	while(!(choice >= Spring && choice <= Fall));
+
 	semester = static_cast<Semester>(choice);
 
 	cout << "ENTER THE COURSE YEAR: \n";
