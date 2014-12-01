@@ -2,8 +2,11 @@
 #define GRADEBOOK_H
 
 #include <set>
+#include <map>
 #include <string>
 #include <vector>
+
+typedef std::vector<std::string> Student;
 
 enum Semester {Spring =0, Summer, Fall};
 const std::string SemesterString[3] = {"Spring", "Summer", "Fall"};
@@ -25,9 +28,10 @@ class Gradebook
 			int m_year;
 			Semester m_semester;
 			std::vector<std::string> m_fields;
-			std::vector< std::vector<std::string> > m_students;
+			std::vector<Student> m_students;
 		};
 		std::set<Course> m_courses;
+		std::map<std::string, std::vector<Student*> > m_students;
 	public:
 		Gradebook();
 		~Gradebook();

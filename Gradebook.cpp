@@ -57,7 +57,7 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 		int nameField = 0;
 
 		//get the user ID / Student ID field
-		for(vector<string>::const_iterator field = course->m_fields.begin(); field != course->m_fields.end(); ++field)
+		for(Student::const_iterator field = course->m_fields.begin(); field != course->m_fields.end(); ++field)
 		{
 			string f = *field;
 			if (f.compare("Student Id") == 0 || f.compare("User ID") == 0) {
@@ -67,9 +67,9 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 		}
 
 		//iterating through the students
-		for(vector< vector<string> >::const_iterator student = course->m_students.begin(); student != course->m_students.end(); ++student)
+		for(vector<Student>::const_iterator student = course->m_students.begin(); student != course->m_students.end(); ++student)
 		{
-			vector<string> s = *student;
+			Student s = *student;
 
 			//checking every student ID for a match
 			if (s[idField].compare(studentID) == 0)
@@ -79,8 +79,8 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 				if (newFields.size() == 0) newFields.push_back("User ID");
 
 				//get iterators for the fields and for the data
-				vector<string>::const_iterator sit = s.begin();
-				vector<string>::const_iterator f = course->m_fields.begin();
+				Student::const_iterator sit = s.begin();
+				Student::const_iterator f = course->m_fields.begin();
 
 				//we can iterate through both vectors together since the fields and data should always match at a given index
 				while ((sit != s.end()) && (f != course->m_fields.end()))
@@ -153,7 +153,7 @@ Gradebook::Course::Course(ifstream& file, const string& courseName, const int& y
 	string line;
 	while (getline(file, line))
 	{
-		m_students.push_back(vector<string>());
+		m_students.push_back(Student());
 		stringstream linestream(line);
 		while (!linestream.eof()) {
 			string record;
@@ -185,14 +185,14 @@ Gradebook::Course::Course(ifstream& file, const string& courseName, const int& y
 void Gradebook::Course::printAll() const
 {
 	cout << endl << SemesterString[m_semester] << " " << m_year << endl;
-	for(vector<string>::const_iterator field = m_fields.begin(); field != m_fields.end(); ++field)
+	for(Student::const_iterator field = m_fields.begin(); field != m_fields.end(); ++field)
 	{
 		cout << *field << ", ";
 	}
 	cout << "\b \b " << endl;
-	for(vector< vector<string> >::const_iterator student = m_students.begin(); student != m_students.end(); ++student)
+	for(vector< Student >::const_iterator student = m_students.begin(); student != m_students.end(); ++student)
 	{
-		for(vector<string>::const_iterator item = student->begin(); item != student->end(); ++item)
+		for(Student::const_iterator item = student->begin(); item != student->end(); ++item)
 		{
 			cout << *item << ", ";
 		}
