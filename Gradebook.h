@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-enum Semester {Spring, Summer, Fall};
+enum Semester {Spring =0, Summer, Fall};
 const std::string SemesterString[3] = {"Spring", "Summer", "Fall"};
 
 class Gradebook

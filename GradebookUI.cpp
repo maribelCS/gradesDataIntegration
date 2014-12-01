@@ -14,15 +14,24 @@ GradebookUI::GradebookUI() {
 void GradebookUI::handleAddDataRequest() {
 
 	string filename;
-	string semester;
+	Semester semester;
 	int year;
 	string course;
 	
 	cout << "ENTER THE FILE NAME: \n";
 	cin >> filename;
 
-	cout << "ENTER THE COURSE SEMESTER: \n";
-	cin >> semester;
+	int choice;
+	do
+	{
+		cout << "ENTER THE COURSE SEMESTER:" << endl;
+		for(int i=Spring; i<=Fall; i++)
+		{
+			cout << "[" << i << "] " << SemesterString[i] << endl;
+		}
+		cin >> choice;
+	} while(!(choice >= Spring && choice <= Fall));
+	semester = static_cast<Semester>(choice);
 
 	cout << "ENTER THE COURSE YEAR: \n";
 	cin >> year;
