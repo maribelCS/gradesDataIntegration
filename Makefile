@@ -1,5 +1,5 @@
-Gradebook: main.o Gradebook.o Menu.o
-	g++ -o Gradebook main.o Gradebook.o Menu.o
+Gradebook: main.o Gradebook.o GradebookUI.o
+	g++ -o Gradebook main.o Gradebook.o GradebookUI.o
 
 main.o: main.cpp Gradebook.o
 	g++ -c main.cpp
@@ -7,8 +7,8 @@ main.o: main.cpp Gradebook.o
 Gradebook.o: Gradebook.cpp Gradebook.h
 	g++ -c Gradebook.cpp
 
-Menu.o: Menu.cpp Menu.h
-	g++ -c Menu.cpp
+GradebookUI.o: GradebookUI.cpp GradebookUI.h
+	g++ -c GradebookUI.cpp
 
 run: Gradebook
 	./Gradebook
