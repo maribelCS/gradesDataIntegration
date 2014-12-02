@@ -27,14 +27,20 @@ void Gradebook::addCourse(
 		cout << "Unable to open file" << endl;
 		return;
 	}
-	Course course = Course(file, courseName, year, semester);
+
+	int initialSize = getSize();
+
+	Course course = Course(this, file, courseName, year, semester);
 	m_courses.insert(course);
 
-	// success message
+	int studentsAdded = getSize() - initialSize;
 	cout << "Successfully added "
-		<< course.m_year << " "
 		<< course.m_courseName << " "
-		<< SemesterString[course.m_semester] << endl;
+		<< SemesterString[course.m_semester] << " "
+		<< course.m_year << endl;
+
+	cout << "Students in repository before adding: " << initialSize << endl;
+	cout << "Previously untracked students (by User ID): " << studentsAdded << endl;
 }
 
 void Gradebook::printAll() const
@@ -145,12 +151,12 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 		ctr++;
 	}
 	outfile.close();
-	cout << "Added student " << studentID << " to " << saveLocation << endl;
+	cout << "Exported student " << studentID << " to " << saveLocation << endl;
 }
 
 
-Gradebook::Course::Course(ifstream& file, const string& courseName, const int& year, const Semester& semester)
-	:m_courseName(courseName), m_year(year), m_semester(semester)
+Gradebook::Course::Course(Gradebook* gradebook, ifstream& file, const string& courseName, const int& year, const Semester& semester)
+	:gb(gradebook), m_courseName(courseName), m_year(year), m_semester(semester)
 {
 	string line;
 	while (getline(file, line)) // each line of the CSV
@@ -184,6 +190,29 @@ Gradebook::Course::Course(ifstream& file, const string& courseName, const int& y
 	// Move first element to m_fields
 	m_fields = *m_students.begin();
 	m_students.erase(m_students.begin());
+
+
+
+	//takes the user IDs for every students and adds to a set of all students in the gradebook for easy counting with no duplicates
+	int counter = 0; //for finding the user ID index
+	for (Student::const_iterator field = m_fields.begin(); field != m_fields.end(); ++field) {
+		string fval = *field; //current header title
+		std:transform(fval.begin(), fval.end(), fval.begin(), ::tolower); //makes fval lower case for more accurate checking
+
+		//finding the user id field
+		if (fval.find("student id") != string::npos || fval.find("user id") != string::npos) break; //stop when we hit the id field
+		else counter++; //stop when we find user id header
+	}
+	//add user IDs for all students to the set of student IDs
+	int studentCount = 0;
+	for (vector< Student >::const_iterator student = m_students.begin(); student != m_students.end(); ++student) {
+		studentCount++;
+		Student s = *student;
+		gb->student_set.insert(s[counter]);
+	}
+	cout << "\nData read for " << studentCount << " students." << endl;
+
+
 }
 
 void Gradebook::Course::printAll() const

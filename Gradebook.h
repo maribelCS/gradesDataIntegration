@@ -18,6 +18,7 @@ class Gradebook
 		{
 		public:
 			Course(
+				Gradebook* gradebook,
 				std::ifstream& filename,
 				const std::string& courseName,
 				const int& year,
@@ -26,11 +27,13 @@ class Gradebook
 			void printAll() const;
 			std::string m_courseName;
 			int m_year;
+			Gradebook* gb;
 			Semester m_semester;
 			std::vector<std::string> m_fields;
 			std::vector<Student> m_students;
 		};
 		std::set<Course> m_courses;
+		std::set<std::string> student_set;
 	public:
 		Gradebook();
 		~Gradebook();
@@ -42,6 +45,7 @@ class Gradebook
 			const Semester& semester);
 		void printAll() const;
 		void exportStudent(const std::string studentID, const std::string saveLocation) const;
+		inline int getSize() const { return student_set.size(); };
 };
 
 #endif
