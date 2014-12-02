@@ -30,6 +30,7 @@ void Gradebook::addCourse(
 	Course course = Course(file, courseName, year, semester);
 	m_courses.insert(course);
 
+	// success message
 	cout << "Successfully added "
 		<< course.m_year << " "
 		<< course.m_courseName << " "
@@ -152,18 +153,18 @@ Gradebook::Course::Course(ifstream& file, const string& courseName, const int& y
 	:m_courseName(courseName), m_year(year), m_semester(semester)
 {
 	string line;
-	while (getline(file, line))
+	while (getline(file, line)) // each line of the CSV
 	{
-		m_students.push_back(Student());
+		m_students.push_back(Student()); // add a student to the course
 		stringstream linestream(line);
 		while (!linestream.eof()) {
-			string record;
+			string record; // one comma-separated element
 			while(linestream.peek()==' ') linestream.get(); // remove space after comma
-			if(linestream.peek() == '"')
+			if(linestream.peek() == '"') // if the record is surrounded by quotes
 			{
 				linestream.get();
 				getline(linestream, record, '"');
-				while(linestream.peek() == '"') {
+				while(linestream.peek() == '"') { // handle inner double quotes
 					record += linestream.get();
 					string piece;
 					getline(linestream, piece, '"');
