@@ -77,7 +77,7 @@ int GradebookUI::printMenu() {
 	promptUserChoice();	
 	userChoice = cin.get();
 
-	while (userChoice != 'e' && userChoice != 'E') {
+	while (userChoice != 'e' && userChoice != 'E') {   
 
 		if (firstPrompt != 0) {
 			promptUserChoice();
