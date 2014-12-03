@@ -151,7 +151,7 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 		ctr++;
 	}
 	outfile.close();
-	cout << "Exported student " << studentID << " to " << saveLocation << endl;
+	cout << "Exported student " << studentID << " to " << saveLocation << " in the data folder."<< endl;
 }
 
 

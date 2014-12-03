@@ -12,6 +12,24 @@ using namespace std;
 GradebookUI::GradebookUI() {
 }
 
+string GradebookUI::fileTypeExtensionCheck(string fileName) {
+
+	string maybeCSV;
+
+	//If file name length large enough to include file type extenstion, check. If extension not inluded, add .csv
+	if(fileName.length() > 5) {
+		maybeCSV = fileName.substr(fileName.length()-4,4);
+		if(maybeCSV.compare(".csv") != 0)
+			fileName += ".csv";
+	}
+	
+	// if file name is short enough to confirm it does not have the file extension, add it
+	if(fileName.length() > 1 && fileName.length() < 5 )
+		fileName += ".csv";
+
+	return fileName;
+}
+
 void GradebookUI::handleAddDataRequest() {
 
 	string filename;
@@ -21,6 +39,8 @@ void GradebookUI::handleAddDataRequest() {
 	
 	cout << "ENTER THE FILE NAME: \n";
 	cin >> filename;
+
+	filename = fileTypeExtensionCheck(filename);
 
 	int choice;
 	do
@@ -62,6 +82,11 @@ void GradebookUI::handleSaveDataRequest() {
 	
 	cout << "ENTER FILE NAME THAT EXPORTED DATA WILL BE SENT TO\n";
 	cin >> fileName;
+
+	
+	fileName = fileTypeExtensionCheck(fileName);
+
+	exportStudent(studentID,fileName);
 }
 
 int GradebookUI::exitProgram() {
