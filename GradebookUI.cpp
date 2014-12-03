@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <limits>
 #include <algorithm>
 #include "Gradebook.h"
 #include "GradebookUI.h"
@@ -37,8 +38,15 @@ void GradebookUI::handleAddDataRequest() {
 
 	cout << "ENTER THE COURSE YEAR: \n";
 	cin >> year;
+
+	while(cin.fail() || year < 1000 || year > 9999 ) {
+	    cin.clear();
+	    cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	    cout << "Invalid year entry.  ENTER THE COURSE YEAR: ";
+	    cin >> year;
+	}
 	
-	cout << "ENTER THE COURSE NAME in the format XX123: \n";
+	cout << "ENTER THE COURSE NAME in the format XX123: \n\n";
 	cin >> course;
 
 	addCourse(filename, course, year, semester);
