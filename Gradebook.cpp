@@ -16,21 +16,15 @@ Gradebook::~Gradebook()
 }
 
 void Gradebook::addCourse(
-	const string& filename,
+	ifstream& file,
 	const string& courseName,
 	const int& year,
 	const Semester& semester)
 {
-	ifstream file (filename.c_str());
-	if (!file.is_open())
-	{
-		cout << "Unable to open file" << endl;
-		return;
-	}
 
 	int initialSize = getSize();
 
-	Course course = Course(this, file, courseName, year, semester);
+	Course course = Course(*this, file, courseName, year, semester);
 	m_courses.insert(course);
 
 	int studentsAdded = getSize() - initialSize;
@@ -43,6 +37,7 @@ void Gradebook::addCourse(
 	cout << "Previously untracked students (by User ID): " << studentsAdded << endl;
 }
 
+// print all data (for testing)
 void Gradebook::printAll() const
 {
 	for(set<Course>::const_iterator course = m_courses.begin(); course != m_courses.end(); ++course)
@@ -155,8 +150,8 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 }
 
 
-Gradebook::Course::Course(Gradebook* gradebook, ifstream& file, const string& courseName, const int& year, const Semester& semester)
-	:gb(gradebook), m_courseName(courseName), m_year(year), m_semester(semester)
+Gradebook::Course::Course(Gradebook& gb, ifstream& file, const string& courseName, const int& year, const Semester& semester)
+	:m_gb(gb), m_courseName(courseName), m_year(year), m_semester(semester)
 {
 	string line;
 	while (getline(file, line)) // each line of the CSV
@@ -208,10 +203,9 @@ Gradebook::Course::Course(Gradebook* gradebook, ifstream& file, const string& co
 	for (vector< Student >::const_iterator student = m_students.begin(); student != m_students.end(); ++student) {
 		studentCount++;
 		Student s = *student;
-		gb->student_set.insert(s[counter]);
+		gb.student_set.insert(s[counter]);
 	}
 	cout << "\nData read for " << studentCount << " students." << endl;
-
 
 }
 

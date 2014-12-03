@@ -12,22 +12,10 @@ using namespace std;
 GradebookUI::GradebookUI() {
 }
 
-string GradebookUI::fileTypeExtensionCheck(string fileName) {
-
-	string maybeCSV;
-
-	//If file name length large enough to include file type extenstion, check. If extension not inluded, add .csv
-	if(fileName.length() > 5) {
-		maybeCSV = fileName.substr(fileName.length()-4,4);
-		if(maybeCSV.compare(".csv") != 0)
-			fileName += ".csv";
-	}
-	
-	// if file name is short enough to confirm it does not have the file extension, add it
-	if(fileName.length() > 1 && fileName.length() < 5 )
-		fileName += ".csv";
-
-	return fileName;
+void GradebookUI::CSVFilename(string& filename)
+{
+	if(filename.length() < 5 || filename.substr(filename.length()-4,4).compare(".csv") != 0)
+		filename += ".csv";
 }
 
 void GradebookUI::handleAddDataRequest() {
@@ -39,22 +27,31 @@ void GradebookUI::handleAddDataRequest() {
 	
 	cout << "ENTER THE FILE NAME: \n";
 	cin >> filename;
-
-	filename = fileTypeExtensionCheck(filename);
-
-	int choice;
-	do
+	CSVFilename(filename);
+	ifstream file (filename.c_str());
+	while(!file.is_open())
 	{
-		cout << "ENTER THE COURSE SEMESTER:" << endl;
-		for(int i=Spring; i<=Fall; i++)
-		{
-			cout << "[" << i << "] " << SemesterString[i] << endl;
-		}
-		cin >> choice;
-	} 
-	while(!(choice >= Spring && choice <= Fall));
+		cout << "Unable to open file. Try again" << endl;
+		cin >> filename;
+		CSVFilename(filename);
+		file.open(filename.c_str());
+	}
 
-	semester = static_cast<Semester>(choice);
+	cout << "ENTER THE COURSE SEMESTER:" << endl;
+	for(int i=Spring; i<=Fall; i++)
+	{
+		cout << "[" << i << "] " << SemesterString[i] << endl;
+	}
+	string choice;
+	cin >> choice;
+	semester = static_cast<Semester>(atoi(choice.c_str()));
+	while(!(isNumber(choice) && semester >= Spring && semester <= Fall))
+	{
+		cout << "Enter a valid number." << endl;
+		cin >> choice;
+		semester = static_cast<Semester>(atoi(choice.c_str()));
+	}
+
 
 	cout << "ENTER THE COURSE YEAR: \n";
 	cin >> year;
@@ -66,10 +63,10 @@ void GradebookUI::handleAddDataRequest() {
 	    cin >> year;
 	}
 	
-	cout << "ENTER THE COURSE NAME in the format XX123: \n\n";
+	cout << "ENTER THE COURSE NAME in the format XX123:" << endl;
 	cin >> course;
 
-	addCourse(filename, course, year, semester);
+	addCourse(file, course, year, semester);
 }
 
 void GradebookUI::handleSaveDataRequest() {
@@ -83,8 +80,7 @@ void GradebookUI::handleSaveDataRequest() {
 	cout << "ENTER FILE NAME THAT EXPORTED DATA WILL BE SENT TO\n";
 	cin >> fileName;
 
-	
-	fileName = fileTypeExtensionCheck(fileName);
+	CSVFilename(fileName);
 
 	exportStudent(studentID,fileName);
 }
@@ -149,5 +145,10 @@ int GradebookUI::printMenu() {
 
 }
 
-
+bool GradebookUI::isNumber(const std::string& s)
+{
+	std::string::const_iterator it = s.begin();
+	while (it != s.end() && std::isdigit(*it)) ++it;
+	return !s.empty() && it == s.end();
+}
 

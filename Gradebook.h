@@ -17,9 +17,10 @@ class Gradebook
 		class Course
 		{
 		public:
+			Gradebook& m_gb;
 			Course(
-				Gradebook* gradebook,
-				std::ifstream& filename,
+				Gradebook& gb,
+				std::ifstream& file,
 				const std::string& courseName,
 				const int& year,
 				const Semester& semester);
@@ -27,7 +28,6 @@ class Gradebook
 			void printAll() const;
 			std::string m_courseName;
 			int m_year;
-			Gradebook* gb;
 			Semester m_semester;
 			std::vector<std::string> m_fields;
 			std::vector<Student> m_students;
@@ -39,7 +39,7 @@ class Gradebook
 		~Gradebook();
 		friend bool operator<(const Course&, const Course&);
 		void addCourse(
-			const std::string& filename,
+			std::ifstream& file,
 			const std::string& courseName,
 			const int& year,
 			const Semester& semester);

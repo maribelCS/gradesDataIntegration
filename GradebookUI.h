@@ -7,16 +7,16 @@ using namespace std;
 
 class GradebookUI : public Gradebook
 {
-	//private:
-		
 	public:
 		GradebookUI();
 		int printMenu();
-		string fileTypeExtensionCheck(string filename);
+		void CSVFilename(string& filename);
 		void handleAddDataRequest();
 		void handleSaveDataRequest();
 		int exitProgram();
 		void promptUserChoice();
+	private:
+		static bool isNumber(const string&);
 };
 
 #endif
