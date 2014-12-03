@@ -33,7 +33,7 @@ class Gradebook
 			std::vector<Student> m_students;
 		};
 		std::set<Course> m_courses;
-		std::set<std::string> student_set;
+		std::set<std::string> student_set; //only contains student IDs for keeping track of unique students
 	public:
 		Gradebook();
 		~Gradebook();
@@ -46,6 +46,7 @@ class Gradebook
 		void printAll() const;
 		void exportStudent(const std::string studentID, const std::string saveLocation) const;
 		inline int getSize() const { return student_set.size(); };
+		inline std::set<std::string> getStudentSet() const { return student_set; }
 };
 
 #endif

@@ -33,8 +33,8 @@ void Gradebook::addCourse(
 		<< SemesterString[course.m_semester] << " "
 		<< course.m_year << endl;
 
-	cout << "Students in repository before adding: " << initialSize << endl;
-	cout << "Previously untracked students (by User ID): " << studentsAdded << endl;
+	cout << "Unique students in repository before adding: " << initialSize << endl;
+	cout << "Previously untracked students added (by User ID): " << studentsAdded << endl;
 }
 
 // print all data (for testing)
@@ -146,7 +146,7 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 		ctr++;
 	}
 	outfile.close();
-	cout << "Exported student " << studentID << " to " << saveLocation << " in the data folder."<< endl;
+	cout << "Exported student " << studentID << " to data/" << saveLocation << endl;
 }
 
 
