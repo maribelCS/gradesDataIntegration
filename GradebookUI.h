@@ -9,14 +9,13 @@ class GradebookUI : public Gradebook
 {
 	public:
 		GradebookUI();
-		int printMenu();
-		void CSVFilename(string& filename);
+		void startUI();
+	private:
+		static void CSVFilename(string& filename);
+		static bool isNumber(const string&);
+		
 		void handleAddDataRequest();
 		void handleSaveDataRequest();
-		int exitProgram();
-		void promptUserChoice();
-	private:
-		static bool isNumber(const string&);
 };
 
 #endif

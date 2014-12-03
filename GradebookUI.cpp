@@ -20,24 +20,27 @@ void GradebookUI::CSVFilename(string& filename)
 
 void GradebookUI::handleAddDataRequest() {
 
-	string filename;
+	ifstream file;
 	Semester semester;
 	int year;
 	string course;
 	
 	cout << "ENTER THE FILE NAME: \n";
+	string filename;
 	cin >> filename;
 	CSVFilename(filename);
-	ifstream file (filename.c_str());
+	file.open(filename.c_str());
 	while(!file.is_open())
 	{
-		cout << "Unable to open file. Try again" << endl;
+		cout << "Unable to open file. Enter another file name or type 'cancel'." << endl;
 		cin >> filename;
+		cout << filename << endl;
+		if(filename.compare("cancel") == 0) return;
 		CSVFilename(filename);
 		file.open(filename.c_str());
 	}
 
-	cout << "ENTER THE COURSE SEMESTER:" << endl;
+	cout << "\nENTER THE COURSE SEMESTER:" << endl;
 	for(int i=Spring; i<=Fall; i++)
 	{
 		cout << "[" << i << "] " << SemesterString[i] << endl;
@@ -53,7 +56,7 @@ void GradebookUI::handleAddDataRequest() {
 	}
 
 
-	cout << "ENTER THE COURSE YEAR: \n";
+	cout << "\nENTER THE COURSE YEAR: \n";
 	cin >> year;
 
 	while(cin.fail() || year < 1000 || year > 9999 ) {
@@ -63,7 +66,7 @@ void GradebookUI::handleAddDataRequest() {
 	    cin >> year;
 	}
 	
-	cout << "ENTER THE COURSE NAME in the format XX123:" << endl;
+	cout << "\nENTER THE COURSE NAME in the format XX123:" << endl;
 	cin >> course;
 
 	addCourse(file, course, year, semester);
@@ -85,66 +88,6 @@ void GradebookUI::handleSaveDataRequest() {
 	exportStudent(studentID,fileName);
 }
 
-int GradebookUI::exitProgram() {
-	return 0;
-
-}
-
-void GradebookUI::promptUserChoice() {
-	cout << "\n\nEnter the key (in parenthesis) your choice of: \n"<<endl;
-	cout <<  "ADD DATA ('a' or 'A')"<<endl;
-	cout << "SAVE DATA ('s' or 'S')"<<endl;
-	cout << "EXIT PROGRAM ('e' or 'E')\n"<<endl;
-}
-
-int GradebookUI::printMenu() {
-
-	
-	char userChoice;
-	int firstPrompt = 0;
-	cout << "userchoice" + userChoice;
-	promptUserChoice();	
-	userChoice = cin.get();
-
-	while (userChoice != 'e' && userChoice != 'E') {   
-
-		if (firstPrompt != 0) {
-			promptUserChoice();
-			userChoice = cin.get();	
-		}
-
-		firstPrompt++; 
-
-		switch(userChoice) {	
-
-		case 'A':
-		case 'a':
-		handleAddDataRequest();
-		break;
-
-		case 'S':
-		case 's':
-		cout << "save \n "<<endl;
-		handleSaveDataRequest();
-		break;
-
-		case 'E':
-		case 'e':
-		//cout << "exit"<<endl;
-		//return 0;
-		break;
-
-		default: 
-		cout << "INVALID MENU CHOICE \n\t\tRestarting Main Menu . .";
-
-		} // END of switch
-	}  // END do in do while
-
-	 
-	cout << "after"<<endl;
-
-}
-
 bool GradebookUI::isNumber(const std::string& s)
 {
 	std::string::const_iterator it = s.begin();
@@ -152,3 +95,42 @@ bool GradebookUI::isNumber(const std::string& s)
 	return !s.empty() && it == s.end();
 }
 
+void GradebookUI::startUI()
+{
+	while(true) {
+
+		cout << "\n\n===== Gradebook Menu =====\n\n"
+			<< "Make a selection:\n\n"
+			<< " (A) ADD DATA\n"
+			<< " (S) SAVE DATA\n"
+			<< " (E) EXIT PROGRAM\n\n";
+
+		string choice;
+		cin >> choice;
+		cout << endl;
+
+		switch(choice[0]) {
+
+			case 'A':
+			case 'a':
+				cout << "Add Data\n\n";
+				handleAddDataRequest();
+				break;
+
+			case 'S':
+			case 's':
+				cout << "Save Data\n\n";
+				handleSaveDataRequest();
+				break;
+
+			case 'E':
+			case 'e':
+				cout << "Goodbye!" << endl;
+				return;
+
+			default: 
+				cout << "INVALID MENU CHOICE" << endl;
+
+		}
+	}
+}

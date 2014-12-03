@@ -1,11 +1,10 @@
-#include <iostream>
+// #include <iostream>
 #include <fstream>
-#include "Gradebook.h"
 #include "GradebookUI.h"
 
 int main()
 {
-	Gradebook gb = Gradebook();
+	GradebookUI gb = GradebookUI();
 	ifstream file("data/380-spring-2002.csv");
 	gb.addCourse(file, "IT380", 2002, Spring);
 	ifstream file2("data/437-fall-2003.csv");
@@ -14,7 +13,6 @@ int main()
 	gb.addCourse(file3, "IT467", 2003, Fall);
 	//gb.printAll();
 	gb.exportStudent("1wvs78", "file2.csv");
-	GradebookUI menu = GradebookUI();
-	menu.printMenu();
+	gb.startUI();
 	return 0;
 }
