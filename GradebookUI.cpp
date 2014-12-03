@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <limits>
 #include <algorithm>
@@ -76,6 +75,11 @@ void GradebookUI::handleSaveDataRequest() {
 
 	cout << "ENTER STUDENT ID: \n";
 	cin >> studentID;
+
+	while (getStudentSet().find(studentID) == getStudentSet().end()) {
+		cout << "Student " << studentID << " not found. Please try again." << endl;
+		cin >> studentID;
+	}
 	
 	cout << "ENTER FILE NAME THAT EXPORTED DATA WILL BE SENT TO\n";
 	cin >> fileName;
@@ -83,11 +87,6 @@ void GradebookUI::handleSaveDataRequest() {
 	CSVFilename(fileName);
 
 	exportStudent(studentID,fileName);
-}
-
-int GradebookUI::exitProgram() {
-	return 0;
-
 }
 
 void GradebookUI::promptUserChoice() {
@@ -99,49 +98,34 @@ void GradebookUI::promptUserChoice() {
 
 int GradebookUI::printMenu() {
 
-	
-	char userChoice;
-	int firstPrompt = 0;
-	cout << "userchoice" + userChoice;
-	promptUserChoice();	
-	userChoice = cin.get();
+	string userChoice = "";
 
-	while (userChoice != 'e' && userChoice != 'E') {   
+	//loop forever or until choice is 'e' which returns from the function
+	while (1) {  
 
-		if (firstPrompt != 0) {
-			promptUserChoice();
-			userChoice = cin.get();	
+		promptUserChoice();
+		cin >> userChoice;
+
+		if (userChoice.compare("a") == 0 || userChoice.compare("A") == 0) { //adding
+			handleAddDataRequest();
 		}
 
-		firstPrompt++; 
+		else if (userChoice.compare("s") == 0 || userChoice.compare("S") == 0) { //exporting
+			handleSaveDataRequest();
+		}
 
-		switch(userChoice) {	
+		else if (userChoice.compare("e") == 0 || userChoice.compare("E") == 0) { //exit
+			cout << "Exiting" << endl;
+			return 0;;
+		}
 
-		case 'A':
-		case 'a':
-		handleAddDataRequest();
-		break;
+		else { //invalid choice
+			cout << "\nINVALID MENU CHOICE \n\t\tRestarting Main Menu . .";
+		}
 
-		case 'S':
-		case 's':
-		cout << "save \n "<<endl;
-		handleSaveDataRequest();
-		break;
 
-		case 'E':
-		case 'e':
-		//cout << "exit"<<endl;
-		//return 0;
-		break;
 
-		default: 
-		cout << "INVALID MENU CHOICE \n\t\tRestarting Main Menu . .";
-
-		} // END of switch
-	}  // END do in do while
-
-	 
-	cout << "after"<<endl;
+	}
 
 }
 
