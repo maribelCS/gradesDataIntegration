@@ -1,7 +1,7 @@
 Gradebook: main.o Gradebook.o GradebookUI.o
 	g++ -o Gradebook main.o Gradebook.o GradebookUI.o
 
-main.o: main.cpp Gradebook.o
+main.o: main.cpp
 	g++ -c main.cpp
 
 Gradebook.o: Gradebook.cpp Gradebook.h

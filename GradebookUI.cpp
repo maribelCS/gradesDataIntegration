@@ -70,19 +70,27 @@ void GradebookUI::handleAddDataRequest() {
 }
 
 void GradebookUI::handleSaveDataRequest() {
-	
+
 	string studentID;
 	string fileName;
 
 	cout << "STUDENT ID: ";
 	cin >> studentID;
-	
+
+	//verifies existence of student before continuing
+	while (!getStudentSet().count(studentID)) {
+		cout << "Student " << studentID << " not found. Try again or type 'cancel'" << endl;
+		cin >> studentID;
+		if (studentID.compare("cancel") == 0) return;
+	}
+
 	cout << "\nOUTPUT FILENAME: ";
 	cin >> fileName;
 
 	CSVFilename(fileName);
 
 	exportStudent(studentID,fileName);
+
 }
 
 void GradebookUI::startUI()
