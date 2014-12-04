@@ -95,17 +95,30 @@ void GradebookUI::handleSaveDataRequest() {
 
 void GradebookUI::startUI()
 {
+
+	bool showMenu = true;
+
 	while(true) {
 
-		cout << "\n\n===== Gradebook Menu =====\n\n"
-			<< "Make a selection:\n\n"
-			<< " (A) ADD DATA\n"
-			<< " (S) SAVE DATA\n"
-			<< " (E) EXIT\n\n";
+		if(showMenu)
+		{
+			cout << "\n\n===== Gradebook Menu =====\n\n"
+				<< "Make a selection:\n\n"
+				<< " (A) ADD DATA\n"
+				<< " (S) SAVE DATA\n"
+				<< " (E) EXIT\n\n";
+		}
+		showMenu = false;
 
 		string choice;
 		cin >> choice;
 		cout << endl;
+
+		if(choice.size() > 1)
+		{
+			cout << "Invalid menu choice (enter one character). Try again." << endl;
+			continue;
+		}
 	
 		switch(choice[0]) {
 
@@ -113,12 +126,14 @@ void GradebookUI::startUI()
 			case 'a':
 				cout << "Add Data\n\n";
 				handleAddDataRequest();
+				showMenu = true;
 				break;
 
 			case 'S':
 			case 's':
 				cout << "Save Data\n\n";
 				handleSaveDataRequest();
+				showMenu = true;
 				break;
 
 			case 'E':
@@ -127,7 +142,7 @@ void GradebookUI::startUI()
 				return;
 
 			default: 
-				cout << "INVALID MENU CHOICE" << endl;
+				cout << "Invalid menu choice. Try again." << endl;
 				break;
 		}
 	}
