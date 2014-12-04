@@ -25,46 +25,47 @@ void GradebookUI::handleAddDataRequest() {
 	int year;
 	string course;
 	
-	cout << "ENTER THE FILE NAME: \n";
+	cout << "ENTER THE FILE NAME: ";
 	string filename;
 	cin >> filename;
 	CSVFilename(filename);
-	ifstream file (filename.c_str());
+	file.open(filename.c_str());
 	while(!file.is_open())
 	{
-		cout << "Unable to open file. Try again" << endl;
+		cout << "Unable to open file. Enter another file name or type 'cancel'.\n";
 		cin >> filename;
+		if(filename.compare("cancel") == 0) return;
 		CSVFilename(filename);
 		file.open(filename.c_str());
 	}
 
-	cout << "ENTER THE COURSE SEMESTER:" << endl;
+	cout << "\nSELECT A COURSE SEMESTER:\n";
 	for(int i=Spring; i<=Fall; i++)
 	{
-		cout << "[" << i << "] " << SemesterString[i] << endl;
+		cout << " [" << i << "] " << SemesterString[i] << endl;
 	}
 	string choice;
 	cin >> choice;
 	semester = static_cast<Semester>(atoi(choice.c_str()));
 	while(!(isNumber(choice) && semester >= Spring && semester <= Fall))
 	{
-		cout << "Enter a valid number." << endl;
+		cout << "Invalid input. Try again." << endl;
 		cin >> choice;
 		semester = static_cast<Semester>(atoi(choice.c_str()));
 	}
 
 
-	cout << "ENTER THE COURSE YEAR: \n";
+	cout << "\nENTER THE COURSE YEAR: ";
 	cin >> year;
 
 	while(cin.fail() || year < 1000 || year > 9999 ) {
-	    cin.clear();
-	    cin.ignore(numeric_limits<streamsize>::max(),'\n');
-	    cout << "Invalid year entry.  ENTER THE COURSE YEAR: ";
-	    cin >> year;
+		cin.clear();
+		cin.ignore(numeric_limits<streamsize>::max(),'\n');
+		cout << "Invalid year entry.\nENTER THE COURSE YEAR: ";
+		cin >> year;
 	}
 	
-	cout << "ENTER THE COURSE NAME in the format XX123:" << endl;
+	cout << "\nENTER THE COURSE NAME (format: XX123): ";
 	cin >> course;
 
 	addCourse(file, course, year, semester);
@@ -75,22 +76,15 @@ void GradebookUI::handleSaveDataRequest() {
 	string studentID;
 	string fileName;
 
-	cout << "ENTER STUDENT ID: \n";
+	cout << "STUDENT ID: ";
 	cin >> studentID;
 	
-	cout << "ENTER FILE NAME THAT EXPORTED DATA WILL BE SENT TO\n";
+	cout << "\nOUTPUT FILENAME: ";
 	cin >> fileName;
 
 	CSVFilename(fileName);
 
 	exportStudent(studentID,fileName);
-}
-
-bool GradebookUI::isNumber(const std::string& s)
-{
-	std::string::const_iterator it = s.begin();
-	while (it != s.end() && std::isdigit(*it)) ++it;
-	return !s.empty() && it == s.end();
 }
 
 void GradebookUI::startUI()
@@ -112,23 +106,25 @@ void GradebookUI::startUI()
 			case 'A':
 			case 'a':
 				cout << "Add Data\n\n";
-		handleAddDataRequest();
-		break;
+				handleAddDataRequest();
+				break;
 
 			case 'S':
 			case 's':
 				cout << "Save Data\n\n";
-		handleSaveDataRequest();
-		break;
+				handleSaveDataRequest();
+				break;
 
 			case 'E':
 			case 'e':
-				cout << "Goodbye!" << endl;
+				cout << "Goodbye!\n\n";
 				return;
 
 			default: 
 				cout << "INVALID MENU CHOICE" << endl;
-
+				break;
+		}
+	}
 }
 
 bool GradebookUI::isNumber(const std::string& s)
@@ -137,4 +133,3 @@ bool GradebookUI::isNumber(const std::string& s)
 	while (it != s.end() && std::isdigit(*it)) ++it;
 	return !s.empty() && it == s.end();
 }
-
