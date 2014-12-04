@@ -1,10 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <limits>
 #include <algorithm>
-#include "Gradebook.h"
 #include "GradebookUI.h"
 
 using namespace std;
@@ -95,7 +93,7 @@ void GradebookUI::startUI()
 			<< "Make a selection:\n\n"
 			<< " (A) ADD DATA\n"
 			<< " (S) SAVE DATA\n"
-			<< " (E) EXIT PROGRAM\n\n";
+			<< " (E) EXIT\n\n";
 
 		string choice;
 		cin >> choice;
@@ -106,14 +104,14 @@ void GradebookUI::startUI()
 			case 'A':
 			case 'a':
 				cout << "Add Data\n\n";
-		handleAddDataRequest();
-		break;
+				handleAddDataRequest();
+				break;
 
 			case 'S':
 			case 's':
 				cout << "Save Data\n\n";
-		handleSaveDataRequest();
-		break;
+				handleSaveDataRequest();
+				break;
 
 			case 'E':
 			case 'e':
@@ -122,7 +120,6 @@ void GradebookUI::startUI()
 
 			default: 
 				cout << "INVALID MENU CHOICE" << endl;
-
 				break;
 		}
 	}

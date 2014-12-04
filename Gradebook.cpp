@@ -2,7 +2,6 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include <iterator>
 #include "Gradebook.h"
 
 using namespace std;
