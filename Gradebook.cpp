@@ -123,9 +123,8 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 
 	//writing out
 
-	//appends .csv. and saves to /data/
 
-	ofstream outfile(("data/"+saveLocation).c_str());
+	ofstream outfile((saveLocation).c_str());
 
 	int ctr = 0;
 
@@ -145,7 +144,7 @@ void Gradebook::exportStudent(const string studentID,  string saveLocation) cons
 		ctr++;
 	}
 	outfile.close();
-	cout << "Exported student " << studentID << " to data/" << saveLocation << endl;
+	cout << "Exported student " << studentID << " to " << saveLocation << endl;
 }
 
 
