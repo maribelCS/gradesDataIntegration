@@ -59,10 +59,10 @@ void GradebookUI::handleAddDataRequest() {
 	cin >> year;
 
 	while(cin.fail() || year < 1000 || year > 9999 ) {
-		cin.clear();
-		cin.ignore(numeric_limits<streamsize>::max(),'\n');
+	    cin.clear();
+	    cin.ignore(numeric_limits<streamsize>::max(),'\n');
 		cout << "Invalid year entry.\nENTER THE COURSE YEAR: ";
-		cin >> year;
+	    cin >> year;
 	}
 	
 	cout << "\nENTER THE COURSE NAME (format: XX123): ";
@@ -106,14 +106,14 @@ void GradebookUI::startUI()
 			case 'A':
 			case 'a':
 				cout << "Add Data\n\n";
-				handleAddDataRequest();
-				break;
+		handleAddDataRequest();
+		break;
 
 			case 'S':
 			case 's':
 				cout << "Save Data\n\n";
-				handleSaveDataRequest();
-				break;
+		handleSaveDataRequest();
+		break;
 
 			case 'E':
 			case 'e':
@@ -122,6 +122,7 @@ void GradebookUI::startUI()
 
 			default: 
 				cout << "INVALID MENU CHOICE" << endl;
+
 				break;
 		}
 	}
@@ -133,3 +134,5 @@ bool GradebookUI::isNumber(const std::string& s)
 	while (it != s.end() && std::isdigit(*it)) ++it;
 	return !s.empty() && it == s.end();
 }
+
+

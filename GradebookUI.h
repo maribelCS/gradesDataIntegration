@@ -12,7 +12,7 @@ class GradebookUI : public Gradebook
 		void startUI();
 	private:
 		static void CSVFilename(string& filename);
-		static bool isNumber(const string&);
+		static bool isNumber(const string& s);
 		void handleAddDataRequest();
 		void handleSaveDataRequest();
 };
